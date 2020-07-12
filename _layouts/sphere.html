@@ -1,0 +1,57 @@
+---
+layout: default
+---
+<div id="viewer"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uevent@2/browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/plugins/visible-range.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/howler@2.2.0/dist/howler.min.js"></script>
+<style>
+ #viewer {
+   width: 800px;
+   height: 600px;
+ }
+ 
+</style>   
+
+<script>
+
+	var soundId;
+	   
+	var sound = new Howl({
+		src: ['/media/{{ page.sphere }}/sound.aac'],
+		autoplay: false,
+		loop: true,
+		volume: 0.5,
+	});
+   
+   var viewer = new PhotoSphereViewer.Viewer({
+	container: document.querySelector('#viewer'),
+	panorama: '/media/{{ page.sphere }}/sphere.jpg',
+	navbar: [
+	    'autorotate',
+	    'zoom',
+	    'caption',
+	    'fullscreen',
+	    {
+	      id: 'my-button',
+	      content: 'Sound',
+	      title: 'Hello world',
+	      className: 'custom-button',
+	      onClick: () => {
+	    	  if(sound.playing(soundId)){
+	    		sound.pause();
+	    	  } else{
+	    	  	soundId = sound.play();
+	    	  }
+	      }
+	    },
+	  ]
+});
+
+</script>
+   
+{{ content }}
