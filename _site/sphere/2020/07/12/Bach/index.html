@@ -37,12 +37,25 @@
       <div class="wrapper">
         <div id="viewer"></div>
 
+<div id="waveform"></div>
+<button class="btn btn-primary" data-action="play">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+    Play /
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pause"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+	Pause
+</button>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-volume-2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg><input id="volume" type="range" min="0" max="1" value="1" step="0.01"></input>
+
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.css"/>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
 <script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/uevent@2/browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/plugins/visible-range.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/howler@2.2.0/dist/howler.min.js"></script>
+<script src="https://unpkg.com/wavesurfer.js"></script>
 <style>
  #viewer {
    width: 800px;
@@ -52,16 +65,25 @@
 </style>   
 
 <script>
-
-	var soundId;
 	   
-	var sound = new Howl({
-		src: ['/media/2020-12-07-Bach/sound.aac'],
-		autoplay: false,
-		loop: true,
-		volume: 0.5,
+	var wavesurfer = WaveSurfer.create({
+	    container: '#waveform'
 	});
-   
+	wavesurfer.load('/media/2020-12-07-Bach/sound.aac');
+	
+    // Play button
+    var button = document.querySelector('[data-action="play"]');
+
+    button.addEventListener('click', wavesurfer.playPause.bind(wavesurfer));
+	
+   var volumeInput = document.querySelector('#volume');
+    var onChangeVolume = function (e) {
+      wavesurfer.setVolume(e.target.value);
+      console.log(e.target.value);
+    };
+    volumeInput.addEventListener('input', onChangeVolume);
+    volumeInput.addEventListener('change', onChangeVolume);
+	   
    var viewer = new PhotoSphereViewer.Viewer({
 	container: document.querySelector('#viewer'),
 	panorama: '/media/2020-12-07-Bach/sphere.jpg',
@@ -72,15 +94,11 @@
 	    'fullscreen',
 	    {
 	      id: 'my-button',
-	      content: 'Sound',
+	      content: 'Play/Pause',
 	      title: 'Hello world',
 	      className: 'custom-button',
 	      onClick: () => {
-	    	  if(sound.playing(soundId)){
-	    		sound.pause();
-	    	  } else{
-	    	  	soundId = sound.play();
-	    	  }
+	    	  wavesurfer.playPause();
 	      }
 	    },
 	  ]

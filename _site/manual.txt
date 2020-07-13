@@ -1,3 +1,5 @@
 jekyll new myblog  
 
 bundle exec jekyll serve 
+
+ffmpeg -i MVI_6979.MP4 -vn -acodec copy wiese.aac 
