@@ -1,6 +1,6 @@
-title: Nature Spheres
+title: Sphären der Natur
 description: >- # this means to ignore newlines until "baseurl:"
-  Capturing the nature.
+  Die Natur einfangen. Oder sich von der Natur einfangen lassen.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://127.0.0.1:4000/" # the base hostname & protocol for your site, e.g. http://example.com
 permalink: pretty
