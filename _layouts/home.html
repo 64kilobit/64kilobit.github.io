@@ -18,26 +18,37 @@ layout: default
 
 
   {%- if posts.size > 0 -%}
+  
     {%- if page.list_title -%}
       <h2 class="post-list-heading">{{ page.list_title }}</h2>
-    {%- endif -%}
-    <ul class="post-list">
-      {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-      {%- for post in posts -%}
-      <li>
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
-        <h3>
-          <a class="post-link" href="{{ post.url | relative_url }}">
-            {{ post.title | escape }}
-          </a>
-        </h3>
-        {%- if site.show_excerpts -%}
-          {{ post.excerpt }}
-        {%- endif -%}
-      </li>
-      {%- endfor -%}
-    </ul>
-
+    {%- endif -%}  
+    <div class="row mb-2">
+	{%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+	{%- for post in posts -%}
+	    <div class="col-md-6">
+	      <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+	        <div class="col p-4 d-flex flex-column position-static">
+			{% for tag in site.categories %}
+		      <a href="{{ post.url }}">
+		          <strong class="d-inline-block mb-2 text-primary">{{ tag[0] }}</strong>
+		      </a>
+			{% endfor %}
+	        
+	          <h3 class="mb-0">{{ post.title | escape }}</h3>
+	          <div class="mb-1 text-muted">{{ post.date | date: date_format }}</div>
+		        {%- if site.show_excerpts -%}
+		          <p class="card-text mb-auto">{{ post.excerpt }}</p>
+		        {%- endif -%}
+	          <a href="{{ post.url | relative_url }}" class="stretched-link">Continue reading</a>
+	        </div>
+		<div class="col-auto d-none d-lg-block">
+          <img src="/media/{{ post.sphere }}/sphere.jpg" class="img-fluid" alt="Responsive image">
+        </div>
+	      </div>
+	    </div>
+    {%- endfor -%}
+  </div>
+  
     {% if site.paginate %}
       <div class="pager">
         <ul class="pagination">
