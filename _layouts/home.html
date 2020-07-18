@@ -40,10 +40,10 @@ layout: default
 		          <p class="card-text mb-auto">{{ post.excerpt }}</p>
 		        {%- endif -%}
 	          <a href="{{ post.url | relative_url }}" class="stretched-link">Continue reading</a>
+			  <div class="mb-2">
+	            <img src="/media/{{ post.sphere }}/sphereT.jpg" class="img-fluid" alt="Responsive image">
+	          </div>
 	        </div>
-		<div class="col-auto d-none d-lg-block">
-          <img src="/media/{{ post.sphere }}/sphere.jpg" class="img-fluid" alt="Responsive image">
-        </div>
 	      </div>
 	    </div>
     {%- endfor -%}

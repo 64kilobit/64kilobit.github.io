@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+ 
+  <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      
+      /*
+ * Footer
+ */
+.blog-footer {
+  padding: 2.5rem 0;
+  color: #999;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-top: .05rem solid #e5e5e5;
+}
+.blog-footer p:last-child {
+  margin-bottom: 0;
+}
+      
+  </style>
+</head>
+<body><header>
+
+  <nav class="navbar navbar-dark bg-dark shadow-sm"><div class="container d-flex justify-content-between">
+	<a href="/" class="navbar-brand d-flex align-items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="mr-2" viewBox="0 0 24 24" focusable="false"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        <strong>Sphären der Natur</strong>
+    </a></div>
+  </nav>
+
+</header><main role="main" class="container page-content" aria-label="Content">
+        <div>
+<div class="row">
+	<button id="full" type="button" class="btn btn-primary btn-lg mt-2 mb-2">
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg> Vollbild und 
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-music"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg> Sound
+	</button>
+</div>
+<div id="viewer" class="row"></div>
+<div id="sound" class="row">
+<div id="waveform"></div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.css"/>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uevent@2/browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/plugins/visible-range.min.js"></script>
+<script src="https://unpkg.com/wavesurfer.js"></script>
+
+<style>
+#viewer {
+	height: 600px;
+}
+ 
+#waveform{
+	width: 100%;
+}
+</style>   
+
+<script>
+	   
+	
+   var viewer = new PhotoSphereViewer.Viewer({
+	container: document.querySelector('#viewer'),
+	panorama: '/media/2020-07-18-Huette/sphere.jpg',
+	navbar: [
+	    'zoom',
+	    'caption',
+	    'fullscreen',
+	    {
+	      id: 'my-button',
+	      content: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>',
+	      title: 'Play/Pause',
+	      className: 'custom-button',
+	      onClick: () => {
+	    	  wavesurfer.playPause();
+	      }
+	    },
+	    {
+	      id: 'my-button2',
+	      content: '<input id="volume" type="range" min="0" max="1" value="0.5" step="0.01"></input>',
+	      title: 'Volume',
+	      className: 'custom-button',
+	      onClick: () => {
+	      }
+	    },
+	  ]
+});
+   
+   
+   
+	var buttonFull = document.querySelector('#full');
+   viewer.on('ready', () => {
+		buttonFull.addEventListener('click', function(){
+			viewer.enterFullscreen();
+		});   	
+	    
+	});
+   
+   var wavesurfer = WaveSurfer.create({
+	    container: '#waveform'
+	});
+	wavesurfer.load('/media/2020-07-18-Huette/sound.aac');
+	
+   
+   	wavesurfer.on('ready', function () {
+		buttonFull.addEventListener('click', function(){wavesurfer.play()});   		
+   				
+	    var volumeInput = document.querySelector('#volume');
+	    var onChangeVolume = function (e) {
+	      wavesurfer.setVolume(e.target.value);
+	      console.log(e.target.value);
+	    };
+	    volumeInput.addEventListener('input', onChangeVolume);
+	    volumeInput.addEventListener('change', onChangeVolume);
+   		
+   	});
+   
+
+</script>
+   
+
+
+
+</div>
+
+    </main><footer class="blog-footer">
+     	<p>
+     	<a href="#">Back to top</a>
+     	</p>
+		<p>
+		<a href="/feed.xml">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg>
+			<span>Subscribe</span>
+		</a>
+		</p>
+	<p>Die Natur einfangen. Oder sich von der Natur einfangen lassen.</p>
+</footer>
+</body>
+
+</html>

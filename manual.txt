@@ -2,4 +2,6 @@ jekyll new myblog
 
 bundle exec jekyll serve 
 
-ffmpeg -i MVI_6979.MP4 -vn -acodec copy wiese.aac 
+ffmpeg -i MVI_6979.MP4 -vn -acodec copy sound.aac 
+
+convert sphere.jpg -resize x200 sphereT.jpg; convert sphere.jpg -scale x2000 sphereS.jpg
